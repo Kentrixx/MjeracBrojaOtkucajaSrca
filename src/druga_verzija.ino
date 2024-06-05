@@ -21,7 +21,7 @@ byte animacija[] = { 0b00011000, 0b00011000, 0b00011000, 0b00011000, 0b00011000,
 int melodija[] = { 523, 659, 784, 880, 988 };
 
 const int PULSE_SENSOR_PIN = 0; 
-const int THRESHOLD = 500;
+const int THRESHOLD = 482;
 int trenutniBPM;
 const int duzinaListeBPM = 30;
 int listaBPM[duzinaListeBPM];
@@ -70,9 +70,7 @@ void setup() {
 
 void loop() {
   for (int i = 0; i < duzinaListeBPM; i++) {
-    do {
-      trenutniBPM = pulseSensor.getBeatsPerMinute();
-    } while (trenutniBPM <= 0);
+    trenutniBPM = pulseSensor.getBeatsPerMinute();
     listaBPM[i] = trenutniBPM;
   }
   trenutniBPM = izracunajProsjecanBPM();
@@ -144,6 +142,9 @@ void novaVrijednostUListi(int ucitanaVrijednost) {
 }
 
 float izracunajDuzinuTona(int ucitanaVrijednost) {
+  ucitanaVrijednost = abs(ucitanaVrijednost);
+  if (ucitanaVrijednost == 0)
+    return 1000;
   return (60.0 / (ucitanaVrijednost * 2)) * 1000;
 }
 
